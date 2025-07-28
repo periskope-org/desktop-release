@@ -1,0 +1,22 @@
+{
+  "name": "periskope-desktop-releases",
+  "version": "1.0.0",
+  "description": "Release repository for Periskope Desktop application updates",
+  "private": true,
+  "keywords": [
+    "periskope",
+    "desktop",
+    "releases",
+    "updates"
+  ],
+  "author": "Hashlabs Holdings Inc",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/periskope/desktop-release.git"
+  },
+  "bugs": {
+    "url": "https://periskope.featurebase.app"
+  },
+  "homepage": "https://periskope.app"
+}
