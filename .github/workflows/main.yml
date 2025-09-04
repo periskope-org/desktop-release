@@ -1,0 +1,36 @@
+name: Update version.json on release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  update-version-json:
+    runs-on: ubuntu-latest
+    env:
+      DESKTOP_RELEASE_PAT: ${{ secrets.DESKTOP_RELEASE_PAT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get release info
+        id: release
+        run: |
+          echo "RELEASE_TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          VERSION="${GITHUB_REF_NAME#v}" # remove 'v' prefix if you use v0.0.11
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Push version.json to desktop-release
+        run: |
+          git clone https://x-access-token:${DESKTOP_RELEASE_PAT}@github.com/periskope-org/desktop-release.git temp-desktop-release
+          echo "{\"version\": \"$VERSION\"}" > temp-desktop-release/version.json
+          cd temp-desktop-release
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.json
+          git commit -m "Update version.json to $VERSION" || echo "No changes to commit"
+          git push origin main
